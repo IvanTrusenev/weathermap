@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
@@ -8,6 +11,10 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(seconds: 3), () => context.go('/login'));
+    });
+
     return Material(
       child: Container(
         width: double.infinity,
