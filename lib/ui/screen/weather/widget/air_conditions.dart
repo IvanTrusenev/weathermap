@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/bloc/weather_state.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
 class AirConditions extends StatelessWidget {
@@ -11,10 +11,11 @@ class AirConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherResponse>(
+    return BlocBuilder<WeatherBloc, WeatherState>(
       buildWhen: (prev, cur) =>
-          prev.currentConditions.humidity != cur.currentConditions.humidity ||
-          prev.currentConditions.windSpeed.toInt() != cur.currentConditions.windSpeed.toInt(),
+          prev.selectedConditions.humidity != cur.selectedConditions.humidity ||
+          prev.selectedConditions.windSpeed.toInt() != cur.selectedConditions.windSpeed.toInt() ||
+          prev.selectedConditions.windDegree != cur.selectedConditions.windDegree,
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.h),
@@ -42,7 +43,7 @@ class AirConditions extends StatelessWidget {
                       padding: EdgeInsets.only(left: 8.w),
                       child: SizedBox(
                         width: 56.w,
-                        child: Text('${state.currentConditions.windSpeed.toInt()}', style: TextStyleBook.airConditionVague),
+                        child: Text('${state.selectedConditions.windSpeed.toInt()}', style: TextStyleBook.airConditionVague),
                       ),
                     ),
                     Padding(
@@ -51,8 +52,8 @@ class AirConditions extends StatelessWidget {
                         fit: BoxFit.scaleDown,
                         child: Text(
                             _windDirection(
-                              state.currentConditions.windDegree,
-                              state.currentConditions.windSpeed.toInt(),
+                              state.selectedConditions.windDegree,
+                              state.selectedConditions.windSpeed.toInt(),
                             ),
                             style: TextStyleBook.airConditionWhite),
                       ),
@@ -72,14 +73,14 @@ class AirConditions extends StatelessWidget {
                       padding: EdgeInsets.only(left: 8.w),
                       child: SizedBox(
                         width: 56.w,
-                        child: Text('${state.currentConditions.humidity}', style: TextStyleBook.airConditionVague),
+                        child: Text('${state.selectedConditions.humidity}', style: TextStyleBook.airConditionVague),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 24.w),
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text(_humidityLevel(state.currentConditions.humidity), style: TextStyleBook.airConditionWhite),
+                        child: Text(_humidityLevel(state.selectedConditions.humidity), style: TextStyleBook.airConditionWhite),
                       ),
                     ),
                   ],

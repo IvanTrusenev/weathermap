@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/bloc/weather_state.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
@@ -12,8 +12,8 @@ class Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherResponse>(
-      buildWhen: (prev, cur) => prev.timezone != cur.timezone,
+    return BlocBuilder<WeatherBloc, WeatherState>(
+      buildWhen: (prev, cur) => prev.response.timezone != cur.response.timezone,
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
@@ -27,7 +27,7 @@ class Location extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 8.w),
-                child: Text(state.timezone, style: TextStyleBook.airConditionVague.copyWith(color: ColorBook.white)),
+                child: Text(state.response.timezone, style: TextStyleBook.airConditionVague.copyWith(color: ColorBook.white)),
               ),
             ],
           ),

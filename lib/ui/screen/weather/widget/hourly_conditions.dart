@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/bloc/weather_state.dart';
+import 'package:weathermap/ui/screen/weather/widget/hourly_conditions_item.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
@@ -11,9 +12,23 @@ class HourlyConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherResponse>(
-      buildWhen: (prev, cur) => prev.currentConditions.datetimeInt != cur.currentConditions.datetimeInt,
+    return BlocBuilder<WeatherBloc, WeatherState>(
+      buildWhen: (prev, cur) => prev.selectedConditions.datetimeInt != cur.selectedConditions.datetimeInt,
       builder: (context, state) {
+        late final List<Widget> widgetList;
+        if (state.response.hourlyConditions.isNotEmpty) {
+          widgetList = state.response.hourlyConditions
+              .where((weatherConditions) => weatherConditions.dateTime.day == DateTime.now().day)
+              .map((weatherConditions) => HourlyConditionsItem(
+                    response: state.response,
+                    weatherConditions: weatherConditions,
+                    isSelected: !state.isCurrent && state.selectedConditions.datetimeInt == weatherConditions.datetimeInt,
+                  ))
+              .toList(growable: false);
+        } else {
+          widgetList = [];
+        }
+
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
           child: Container(
@@ -32,12 +47,21 @@ class HourlyConditions extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text('Сегодня', style: TextStyleBook.button.copyWith(color: ColorBook.white)),
-                        Text(_currentDate(state.currentConditions.dateTime), style: TextStyleBook.airConditionWhite),
+                        Text(_currentDate(state.response.currentConditions.dateTime), style: TextStyleBook.airConditionWhite),
                       ],
                     ),
                   ),
                 ),
                 const Divider(thickness: 1, color: ColorBook.white),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(children: widgetList),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

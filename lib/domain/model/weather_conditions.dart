@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:weathermap/domain/model/base/to_json.dart';
 import 'package:weathermap/domain/model/weather_description.dart';
@@ -45,7 +46,14 @@ class WeatherConditions implements ToJson {
   @JsonKey(name: 'weather', defaultValue: [])
   final List<WeatherDescription> weatherDesc;
 
+  /// DateTime ->
   DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(datetimeInt * 1000);
+
+  DateFormat get formatter => DateFormat('HH:mm');
+
+  String get hourMinute => formatter.format(dateTime);
+
+  /// DateTime <-
 
   @override
   Map<String, dynamic> toJson() => _$WeatherConditionsToJson(this);

@@ -8,6 +8,13 @@ class WeatherState {
     required this.isCurrent,
   });
 
+  const WeatherState.empty()
+      : this(
+          response: const WeatherResponse.empty(),
+          selectedConditions: const WeatherConditions.empty(),
+          isCurrent: true,
+        );
+
   final WeatherResponse response;
   final WeatherConditions selectedConditions;
   final bool isCurrent;

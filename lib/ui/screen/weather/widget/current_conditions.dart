@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/bloc/weather_state.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 
 class CurrentConditions extends StatelessWidget {
@@ -12,17 +12,17 @@ class CurrentConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherResponse>(
+    return BlocBuilder<WeatherBloc, WeatherState>(
       buildWhen: (prev, cur) {
-        if (prev.currentConditions.weatherDesc.isNotEmpty && cur.currentConditions.weatherDesc.isNotEmpty) {
-          return prev.currentConditions.weatherDesc.first.main != cur.currentConditions.weatherDesc.first.main;
+        if (prev.response.currentConditions.weatherDesc.isNotEmpty && cur.response.currentConditions.weatherDesc.isNotEmpty) {
+          return prev.response.currentConditions.weatherDesc.first.main != cur.response.currentConditions.weatherDesc.first.main;
         }
         return true;
       },
       builder: (context, state) {
         late final String main;
-        if (state.currentConditions.weatherDesc.isNotEmpty) {
-          main = state.currentConditions.weatherDesc.first.main;
+        if (state.response.currentConditions.weatherDesc.isNotEmpty) {
+          main = state.response.currentConditions.weatherDesc.first.main;
         } else {
           main = '';
         }

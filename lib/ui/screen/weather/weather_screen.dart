@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weathermap/bloc/event/weather_request_event.dart';
 import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/bloc/weather_state.dart';
 import 'package:weathermap/ui/screen/weather/widget/air_conditions.dart';
 import 'package:weathermap/ui/screen/weather/widget/current_conditions.dart';
 import 'package:weathermap/ui/screen/weather/widget/current_conditions_description.dart';
@@ -20,7 +20,7 @@ class WeatherScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (BuildContext context) => WeatherBloc(const WeatherResponse.empty())..add(const WeatherRequestEvent(lat: 39.099724, lon: -94.578331)),
+      create: (BuildContext context) => WeatherBloc(const WeatherState.empty())..add(const WeatherRequestEvent(lat: 39.099724, lon: -94.578331)),
       child: Material(
         child: Container(
           decoration: const BoxDecoration(
