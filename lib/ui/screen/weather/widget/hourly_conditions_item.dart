@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weathermap/bloc/event/select_current_conditions_event.dart';
-import 'package:weathermap/bloc/event/select_hourly_conditions_event.dart';
-import 'package:weathermap/bloc/weather_bloc.dart';
+import 'package:weathermap/bloc/weather/event/select_current_conditions_event.dart';
+import 'package:weathermap/bloc/weather/event/select_hourly_conditions_event.dart';
+import 'package:weathermap/bloc/weather/weather_bloc.dart';
 import 'package:weathermap/domain/model/weather_conditions.dart';
 import 'package:weathermap/domain/model/weather_response.dart';
 import 'package:weathermap/ui/style/color_book.dart';

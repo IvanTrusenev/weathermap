@@ -1,4 +1,4 @@
-import 'package:weathermap/bloc/event/base/weather_base_event.dart';
+import 'package:weathermap/bloc/weather/event/base/weather_base_event.dart';
 import 'package:weathermap/domain/model/weather_conditions.dart';
 import 'package:weathermap/domain/model/weather_response.dart';
 

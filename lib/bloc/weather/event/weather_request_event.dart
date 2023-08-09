@@ -1,4 +1,4 @@
-import 'package:weathermap/bloc/event/base/weather_base_event.dart';
+import 'package:weathermap/bloc/weather/event/base/weather_base_event.dart';
 
 class WeatherRequestEvent extends WeatherBaseEvent {
   const WeatherRequestEvent({

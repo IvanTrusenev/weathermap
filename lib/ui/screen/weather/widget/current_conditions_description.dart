@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weathermap/bloc/weather_bloc.dart';
-import 'package:weathermap/bloc/weather_state.dart';
+import 'package:weathermap/bloc/weather/weather_bloc.dart';
+import 'package:weathermap/bloc/weather/weather_state.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
