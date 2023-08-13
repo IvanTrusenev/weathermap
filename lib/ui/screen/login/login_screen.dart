@@ -1,12 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weathermap/ui/screen/login/login_view_model.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 import 'package:weathermap/ui/widget/button_custom/button_custom.dart';
-import 'package:weathermap/ui/widget/text_input/text_input_cubit.dart';
 import 'package:weathermap/ui/widget/text_input/text_input_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -18,6 +17,13 @@ class LoginScreen extends StatelessWidget {
       create: (BuildContext context) => LoginViewModel(),
       child: Builder(
         builder: (BuildContext context) {
+          final UserCredential? userCredential = context.select((LoginViewModel viewModel) => viewModel.userCredentials);
+          if (userCredential != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<LoginViewModel>().goWeather(context);
+            });
+          }
+
           return SafeArea(
             child: Scaffold(
               appBar: AppBar(
@@ -56,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                       padding: EdgeInsets.only(top: 48.h),
                       child: ButtonCustom(
                         label: 'Войти',
-                        onPressed: () => context.read<LoginViewModel>().goWeather(context),
+                        onPressed: context.read<LoginViewModel>().signIn,
                       ),
                     ),
                   ],
@@ -75,8 +81,8 @@ class _Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TextInputCubit(placeholder: 'Email'),
+    return BlocProvider.value(
+      value: context.read<LoginViewModel>().loginCubit,
       child: const TextInputField(),
     );
   }
@@ -87,11 +93,8 @@ class _Password extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TextInputCubit(
-        placeholder: 'Пароль',
-        obscureText: true,
-      ),
+    return BlocProvider.value(
+      value: context.read<LoginViewModel>().passwordCubit,
       child: const TextInputField(enableObscureText: true),
     );
   }

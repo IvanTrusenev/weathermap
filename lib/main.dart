@@ -1,16 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weathermap/config/config.dart';
+import 'package:weathermap/firebase_options.dart';
 import 'package:weathermap/router/router.dart';
-import 'package:weathermap/ui/screen/login/login_screen.dart';
-import 'package:weathermap/ui/screen/splash/splash_screen.dart';
-import 'package:weathermap/ui/screen/weather/weather_screen.dart';
 
 final Config config = Config();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).whenComplete(() => runApp(const MyApp()));
 }
