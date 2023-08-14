@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:weathermap/main.dart';
+import 'package:weathermap/repository/local/database.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 
@@ -11,7 +14,11 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final Database database = context.read<Database>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await config.init();
+      await database.init();
       Future.delayed(const Duration(seconds: 3), () => context.go('/login'));
     });
 

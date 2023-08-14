@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:weathermap/repository/local/database.dart';
 import 'package:weathermap/ui/screen/login/login_view_model.dart';
 import 'package:weathermap/ui/style/text_style_book.dart';
 import 'package:weathermap/ui/widget/button_custom/button_custom.dart';
@@ -14,7 +15,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => LoginViewModel(),
+      create: (BuildContext context) => LoginViewModel(
+        database: context.read<Database>(),
+      ),
       child: Builder(
         builder: (BuildContext context) {
           final UserCredential? userCredential = context.select((LoginViewModel viewModel) => viewModel.userCredentials);

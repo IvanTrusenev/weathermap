@@ -15,6 +15,13 @@ class WeatherState {
           isCurrent: true,
         );
 
+  WeatherState.initial(WeatherResponse response)
+      : this(
+          response: response,
+          selectedConditions: response.currentConditions,
+          isCurrent: true,
+        );
+
   final WeatherResponse response;
   final WeatherConditions selectedConditions;
   final bool isCurrent;

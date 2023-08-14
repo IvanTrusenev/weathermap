@@ -7,6 +7,10 @@ import 'package:weathermap/bloc/geolocator/geolocator_state.dart';
 import 'package:weathermap/bloc/weather/event/weather_request_event.dart';
 import 'package:weathermap/bloc/weather/weather_bloc.dart';
 import 'package:weathermap/bloc/weather/weather_state.dart';
+import 'package:weathermap/domain/entity/weather_response_entity.dart';
+import 'package:weathermap/domain/mapper/weather_response_mapper.dart';
+import 'package:weathermap/domain/model/weather_response.dart';
+import 'package:weathermap/repository/local/database.dart';
 import 'package:weathermap/ui/screen/weather/widget/air_conditions.dart';
 import 'package:weathermap/ui/screen/weather/widget/current_conditions.dart';
 import 'package:weathermap/ui/screen/weather/widget/current_conditions_description.dart';
@@ -17,7 +21,12 @@ import 'package:weathermap/ui/screen/weather/widget/location.dart';
 import 'package:weathermap/ui/style/color_book.dart';
 
 class WeatherScreen extends StatelessWidget {
-  const WeatherScreen({super.key});
+  const WeatherScreen({
+    super.key,
+    this.initialResponse,
+  });
+
+  final WeatherResponse? initialResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +36,32 @@ class WeatherScreen extends StatelessWidget {
           create: (BuildContext context) => GeolocatorBloc(const GeolocatorState.empty())..add(const GetGeolocatorEvent()),
         ),
         BlocProvider<WeatherBloc>(
-          create: (BuildContext context) => WeatherBloc(const WeatherState.empty()),
+          create: (BuildContext context) {
+            late final WeatherState initialState;
+            if (initialResponse == null) {
+              initialState = const WeatherState.empty();
+            } else {
+              initialState = WeatherState.initial(initialResponse!);
+            }
+
+            return WeatherBloc(initialState);
+          },
         ),
       ],
-      child: BlocListener<GeolocatorBloc, GeolocatorState>(
-        listener: (context, state) {
-          context.read<WeatherBloc>().add(WeatherRequestEvent(lat: state.lat, lon: state.lon));
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<GeolocatorBloc, GeolocatorState>(
+            listener: (context, state) {
+              context.read<WeatherBloc>().add(WeatherRequestEvent(lat: state.lat, lon: state.lon));
+            },
+          ),
+          BlocListener<WeatherBloc, WeatherState>(
+            listener: (context, state) {
+              final WeatherResponseEntity entity = WeatherResponseMapper.fromModel(state.response).entity;
+              context.read<Database>().writeWeather(entity);
+            },
+          ),
+        ],
         child: Material(
           child: Container(
             decoration: const BoxDecoration(

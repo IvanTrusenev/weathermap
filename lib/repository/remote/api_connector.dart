@@ -7,6 +7,15 @@ import 'package:weathermap/domain/model/weather_response.dart';
 import 'package:weathermap/main.dart';
 
 class ApiConnector {
+  /// Singleton ->
+  static final ApiConnector _instance = ApiConnector._internal();
+
+  ApiConnector._internal();
+
+  factory ApiConnector() => _instance;
+
+  /// Singleton <-
+
   Future<WeatherResponse> weatherRequest(ToJson request) async {
     final Uri uri = Uri.https(config.apiAuthority, config.apiPath, request.toJson());
 
