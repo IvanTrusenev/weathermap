@@ -1,16 +1,18 @@
 # weathermap
 
-Weather map
+This is a demo application, example of a weather app.
+Test account to log in:
+Login: **qwerty@qwerty.ru**
+Password: **qwerty**
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Used tools and libraries
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Authorization: **Firebase Authentication**
+- State management: **flutter_bloc**
+- Database: **hive**
+- REST API: **http**
+- API provider: **openweathermap.org**
+- Navigation: **go_router**
+- Adaptive layout: **flutter_screenutil**
+- Code generator: **json_serializable**, **hive_generator**
