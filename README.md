@@ -1,9 +1,10 @@
 # weathermap
 
 This is a demo application, example of a weather app.
+
 Test account to log in:
-Login: **qwerty@qwerty.ru**
-Password: **qwerty**
+- Login: **qwerty@qwerty.ru**
+- Password: **qwerty**
 
 
 ## Used tools and libraries
